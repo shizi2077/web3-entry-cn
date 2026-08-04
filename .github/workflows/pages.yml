@@ -30,7 +30,7 @@ jobs:
       - name: Build static site
         env:
           NEXT_PUBLIC_CF_ANALYTICS_TOKEN: ${{ secrets.CF_ANALYTICS_TOKEN }}
-        run: npm run build
+        run: npm run build:pages
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

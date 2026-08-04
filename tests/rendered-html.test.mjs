@@ -2,90 +2,71 @@ import assert from "node:assert/strict";
 import { access, readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+const contentUrl = new URL("../content/tutorials.ts", import.meta.url);
+const clientUrl = new URL("../dist/client/", import.meta.url);
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+async function html(path) { return readFile(new URL(path, clientUrl), "utf8"); }
 
-  return worker.fetch(
-    new Request("http://localhost/", {
-      headers: { accept: "text/html" },
-    }),
-    {
-      ASSETS: {
-        fetch: async () => new Response("Not found", { status: 404 }),
-      },
-    },
-    {
-      waitUntil() {},
-      passThroughOnException() {},
-    },
-  );
-}
-
-test("server-renders the starter loading skeleton", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Building your site/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(
-    html,
-    /Your first version will appear here automatically when it’s ready\./,
-  );
-  assert.doesNotMatch(html, /Codex/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+test("defines exactly 14 unique P0 tutorials and slugs", async () => {
+  const source = await readFile(contentUrl, "utf8");
+  const entries = [...source.matchAll(/id: "(P0-\d{2})", slug: "([a-z0-9-]+)"/g)];
+  assert.equal(entries.length, 14);
+  assert.equal(new Set(entries.map((entry) => entry[1])).size, 14);
+  assert.equal(new Set(entries.map((entry) => entry[2])).size, 14);
+  assert.deepEqual(entries.map((entry) => entry[1]), Array.from({ length: 14 }, (_, index) => `P0-${String(index + 1).padStart(2, "0")}`));
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
+test("pre-renders the homepage, tutorial hub, and all 14 article pages", async () => {
+  const [home, hub, source] = await Promise.all([html("index.html"), html("tutorials/index.html"), readFile(contentUrl, "utf8")]);
+  assert.match(home, /新手教程/);
+  assert.match(home, /我要提到钱包/);
+  assert.match(hub, /全部新手教程/);
+  assert.match(hub, /<strong>14<\/strong>篇完整教程/);
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
+  const slugs = [...source.matchAll(/id: "P0-\d{2}", slug: "([a-z0-9-]+)"/g)].map((entry) => entry[1]);
+  for (const slug of slugs) {
+    const article = await html(`tutorials/${slug}/index.html`);
+    assert.match(article, /开始前准备/);
+    assert.match(article, /编号步骤/);
+    assert.match(article, /提交前核对清单/);
+    assert.match(article, /官方来源与变更记录/);
+    assert.match(article, /target="_blank" rel="noopener noreferrer"/);
+  }
+  assert.match(source, /"Withdraw from an exchange to a wallet"/);
+  assert.match(source, /"Global fiat off-ramp decision guide"/);
+});
 
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
+test("every referenced tutorial image exists and build copies all diagram assets", async () => {
+  const source = await readFile(contentUrl, "utf8");
+  const files = [...source.matchAll(/img\("([^"]+)"/g)].map((entry) => entry[1]);
+  assert.ok(files.length >= 10);
+  for (const file of new Set(files)) {
+    await access(new URL(`../public/tutorial-images/${file}`, import.meta.url));
+    await access(new URL(`tutorial-images/${file}`, clientUrl));
+  }
+});
 
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
+test("contains versioned local progress, bilingual feedback, and accessible dialogs", async () => {
+  const client = await readFile(new URL("../app/tutorials/[slug]/TutorialArticleClient.tsx", import.meta.url), "utf8");
+  assert.match(client, /tutorial-progress:\$\{tutorial\.id\}:\$\{tutorial\.version\}/);
+  assert.match(client, /role="dialog"/);
+  assert.match(client, /aria-modal="true"/);
+  assert.match(client, /event\.key === "Escape"/);
+  assert.match(client, /内容已过期/);
+  assert.match(client, /Page mismatch/);
+  assert.match(client, /navigator\.clipboard\.writeText\("thw-202"\)/);
+});
 
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+test("keeps scrolling available and avoids body scroll locks", async () => {
+  const files = ["app/page.tsx", "app/globals.css", "app/tutorials/TutorialsClient.tsx", "app/tutorials/[slug]/TutorialArticleClient.tsx"];
+  for (const file of files) {
+    const source = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
+    assert.doesNotMatch(source, /document\.body\.style\.overflow|overflow:\s*hidden\s*;[^}]*body|touchmove.*preventDefault|wheel.*preventDefault/);
+  }
+});
+
+test("exports only the expected article directories", async () => {
+  const entries = await readdir(new URL("tutorials/", clientUrl), { withFileTypes: true });
+  const articleDirectories = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
+  assert.equal(articleDirectories.length, 14);
 });

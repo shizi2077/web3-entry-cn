@@ -16,6 +16,18 @@ npm run dev
 npm run build
 ```
 
+## Optional Cloudflare Web Analytics
+
+To enable Cloudflare Web Analytics for a static build, provide the token from
+the Cloudflare dashboard at build time:
+
+```bash
+NEXT_PUBLIC_CF_ANALYTICS_TOKEN=your-token npm run build
+```
+
+The token is public beacon configuration, not a secret. Without this variable,
+local previews and builds omit the analytics script.
+
 This starter does not use `wrangler.jsonc`.
 
 ## Included Shape
