@@ -174,6 +174,24 @@ export default function Home() {
     } else if (!window.navigator.language.toLowerCase().startsWith("zh")) {
       setLang("en");
     }
+
+    const clearLegacyHash = () => {
+      const initialTarget = window.location.hash.slice(1);
+      if (!initialTarget) return;
+
+      window.requestAnimationFrame(() => {
+        document.getElementById(initialTarget)?.scrollIntoView({ block: "start", behavior: "auto" });
+        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      });
+    };
+
+    const legacyHashTimer = window.setTimeout(clearLegacyHash, 100);
+    window.addEventListener("hashchange", clearLegacyHash);
+
+    return () => {
+      window.clearTimeout(legacyHashTimer);
+      window.removeEventListener("hashchange", clearLegacyHash);
+    };
   }, []);
 
   const toggleLang = () => {
@@ -183,21 +201,29 @@ export default function Home() {
     document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
   };
 
+  const scrollToSection = (targetId: string) => {
+    document.getElementById(targetId)?.scrollIntoView({ block: "start", behavior: "auto" });
+    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
   return (
     <main id="top">
       <div className="ambient ambient-one" aria-hidden="true" />
       <div className="ambient ambient-two" aria-hidden="true" />
       <header className="site-header">
         <div className="shell header-inner">
-          <a className="brand" href="#top" aria-label={t.brand}>
+          <button className="brand" type="button" onClick={() => scrollToSection("top")} aria-label={t.brand}>
             <span className="brand-mark" aria-hidden="true"><i /></span>
             <span>{t.brand}</span>
-          </a>
+          </button>
           <nav className="desktop-nav" aria-label={lang === "zh" ? "主导航" : "Primary navigation"}>
-            <a href="#exchanges">{t.navExchange}</a>
-            <a href="#wallets">{t.navWallet}</a>
-            <a href="#safety">{t.navSafety}</a>
-            <a href="#about">{t.navAbout}</a>
+            <button type="button" onClick={() => scrollToSection("exchanges")}>{t.navExchange}</button>
+            <button type="button" onClick={() => scrollToSection("wallets")}>{t.navWallet}</button>
+            <button type="button" onClick={() => scrollToSection("safety")}>{t.navSafety}</button>
+            <button type="button" onClick={() => scrollToSection("about")}>{t.navAbout}</button>
           </nav>
           <button className="lang-switch" type="button" onClick={toggleLang} aria-label={t.langLabel}>
             <span aria-hidden="true">◎</span>{t.lang}
@@ -215,8 +241,8 @@ export default function Home() {
           <h1 id="hero-title">{t.heroTitleA}<em>{t.heroTitleB}</em></h1>
           <p className="hero-intro">{t.heroText}</p>
           <div className="hero-actions">
-            <a className="button button-primary" href="#exchanges">{t.explore}<span aria-hidden="true">↘</span></a>
-            <a className="button button-ghost" href="#safety">{t.safetyFirst}</a>
+            <button className="button button-primary" type="button" onClick={() => scrollToSection("exchanges")}>{t.explore}<span aria-hidden="true">↘</span></button>
+            <button className="button button-ghost" type="button" onClick={() => scrollToSection("safety")}>{t.safetyFirst}</button>
           </div>
           <div className="trust-line" aria-label={lang === "zh" ? "本站功能边界" : "Site boundaries"}>
             <span>✓ {t.heroTrust}</span><span>✓ {t.heroNoConnect}</span><span>✓ {t.heroNoTrade}</span>
@@ -324,9 +350,9 @@ export default function Home() {
 
       <footer>
         <div className="shell footer-inner">
-          <a className="brand" href="#top"><span className="brand-mark small" aria-hidden="true"><i /></span><span>{t.brand}</span></a>
+          <button className="brand" type="button" onClick={() => scrollToSection("top")}><span className="brand-mark small" aria-hidden="true"><i /></span><span>{t.brand}</span></button>
           <p>{t.footer}</p>
-          <a href="#top" className="to-top">{t.toTop} ↑</a>
+          <button type="button" onClick={() => scrollToSection("top")} className="to-top">{t.toTop} ↑</button>
         </div>
       </footer>
     </main>

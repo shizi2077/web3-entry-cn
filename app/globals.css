@@ -30,7 +30,7 @@ main { min-height: 100vh; position: relative; background: radial-gradient(circle
 
 .site-header { height: 76px; border-bottom: 1px solid var(--line); background: rgba(4, 13, 16, .78); backdrop-filter: blur(18px); position: sticky; top: 0; z-index: 50; }
 .header-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 650; letter-spacing: -.02em; white-space: nowrap; }
+.brand { display: inline-flex; align-items: center; gap: 12px; border: 0; padding: 0; color: inherit; background: transparent; font-weight: 650; letter-spacing: -.02em; white-space: nowrap; cursor: pointer; }
 .brand-mark { width: 30px; height: 30px; display: inline-grid; place-items: center; border: 1px solid rgba(67,226,186,.6); border-radius: 9px 9px 9px 3px; transform: rotate(45deg); position: relative; background: rgba(67,226,186,.06); box-shadow: inset 0 0 16px rgba(67,226,186,.09); }
 .brand-mark::before, .brand-mark::after, .brand-mark i::before, .brand-mark i::after { content: ""; position: absolute; background: var(--accent); border-radius: 99px; }
 .brand-mark::before { width: 4px; height: 4px; top: 7px; left: 7px; }
@@ -38,8 +38,8 @@ main { min-height: 100vh; position: relative; background: radial-gradient(circle
 .brand-mark i::before { width: 1px; height: 13px; left: 14px; top: 8px; transform: rotate(-45deg); }
 .brand-mark i::after { height: 1px; width: 13px; top: 14px; left: 8px; transform: rotate(-45deg); }
 .desktop-nav { display: flex; align-items: center; gap: 36px; margin-left: auto; margin-right: 32px; }
-.desktop-nav a { color: var(--soft); font-size: 14px; transition: color .25s ease; }
-.desktop-nav a:hover { color: var(--accent-2); }
+.desktop-nav button { border: 0; padding: 0; color: var(--soft); background: transparent; font-size: 14px; cursor: pointer; transition: color .25s ease; }
+.desktop-nav button:hover { color: var(--accent-2); }
 .lang-switch { border: 1px solid var(--line); color: var(--soft); background: rgba(255,255,255,.02); padding: 8px 12px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 7px; font-size: 13px; transition: .25s ease; }
 .lang-switch:hover { border-color: var(--line-strong); color: white; }
 
@@ -60,7 +60,7 @@ h1 { font-size: clamp(48px, 5.7vw, 78px); line-height: 1.08; letter-spacing: -.0
 h1 em { color: var(--accent-2); font-style: normal; display: block; text-shadow: 0 0 38px rgba(67,226,186,.13); }
 .hero-intro { max-width: 590px; color: var(--soft); font-size: 17px; line-height: 1.9; margin: 28px 0 30px; }
 .hero-actions { display: flex; gap: 12px; align-items: center; }
-.button { height: 48px; padding: 0 20px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; gap: 28px; font-size: 14px; font-weight: 650; position: relative; }
+.button { height: 48px; padding: 0 20px; border: 0; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; gap: 28px; font-size: 14px; font-weight: 650; position: relative; cursor: pointer; }
 .button-primary { color: #04110e; background: var(--accent); box-shadow: 0 10px 36px rgba(67,226,186,.14); }
 .button-primary::before { content: ""; position: absolute; width: 50%; height: 200%; left: -80%; top: -50%; background: rgba(255,255,255,.28); transform: skewX(-20deg); transition: left .55s ease; }
 .button-primary:hover::before { left: 130%; }
@@ -161,7 +161,7 @@ footer { padding: 38px 0; background: var(--bg-deep); }
 .brand-mark.small { width: 24px; height: 24px; border-radius: 7px 7px 7px 3px; }
 .brand-mark.small::before { top: 5px; left: 5px; }.brand-mark.small::after { right: 5px; bottom: 5px; }.brand-mark.small i::before { left: 11px; top: 5px; }.brand-mark.small i::after { top: 11px; left: 5px; }
 .footer-inner p { margin: 0 auto 0 0; color: #668082; font-size: 12px; }
-.to-top { color: #8fa7a8; font-size: 12px; }
+.to-top { border: 0; padding: 0; color: #8fa7a8; background: transparent; font-size: 12px; cursor: pointer; }
 
 @keyframes grid-drift { to { background-position: 68px 68px; } }
 @keyframes float { 0%, 100% { transform: translateY(0); opacity: .4; } 50% { transform: translateY(-18px); opacity: 1; } }
