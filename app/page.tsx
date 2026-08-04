@@ -37,7 +37,7 @@ const exchanges = [
 const wallets = [
   {
     name: "MetaMask",
-    mark: "M",
+    icon: "/brands/metamask-app.svg",
     href: "https://metamask.io/",
     domain: "metamask.io",
     zh: "浏览器与移动端自托管钱包",
@@ -45,7 +45,7 @@ const wallets = [
   },
   {
     name: "Pi Wallet",
-    mark: "π",
+    icon: "/brands/pi-wallet-app.jpg",
     href: "https://wallet.pinet.com/",
     domain: "wallet.pinet.com",
     zh: "请通过官方 Pi Browser 打开",
@@ -54,7 +54,7 @@ const wallets = [
   },
   {
     name: "TokenPocket",
-    mark: "TP",
+    icon: "/brands/tokenpocket-app.jpg",
     href: "https://www.tokenpocket.pro/",
     domain: "tokenpocket.pro",
     zh: "支持多链生态的自托管钱包",
@@ -72,7 +72,7 @@ const copy = {
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "可信入口，",
     heroTitleB: "清晰抵达 Web3",
-    heroText: "为中文用户整理交易所与钱包入口。信息克制、路径清楚，先核对域名，再安全前往。",
+    heroText: "为中文用户整理交易所与钱包入口。信息克制、路径清楚，直达常用入口。",
     explore: "浏览交易所",
     safetyFirst: "先看安全提示",
     heroTrust: "仅做入口导航",
@@ -80,7 +80,7 @@ const copy = {
     heroNoTrade: "不提供交易",
     exchangeKicker: "EXCHANGES",
     exchangeTitle: "交易所入口",
-    exchangeText: "三个常用平台的专属注册入口。跳转前，请再次核对页面显示的目标域名。",
+    exchangeText: "火币、欧易、币安的注册入口。",
     special: "专属入口",
     register: "前往注册",
     rebate: "通过本站专属入口注册，可解锁专属返佣权益。",
@@ -90,8 +90,8 @@ const copy = {
     walletText: "只收录钱包官方地址。首次使用时，建议从官网核对下载来源与产品说明。",
     official: "官方入口",
     openOfficial: "打开官方入口",
-    piWarningTitle: "Pi Wallet 助记词安全警示",
-    piWarning: "助记词只能在官方 Pi Browser 内打开的 wallet.pinet.com 输入。任何聊天、表单、客服或其他网站索要助记词，都应立即停止。",
+    piWarningTitle: "钱包助记词安全提示",
+    piWarning: "助记词和私钥只能在对应钱包的官方应用或官方入口内输入。任何聊天、表单、客服或其他网站索要，都应立即停止。",
     piSafety: "查看 Pi 官方安全中心",
     safetyKicker: "SECURITY CHECK",
     safetyTitle: "出发前，做三次核对",
@@ -121,7 +121,7 @@ const copy = {
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "Trusted entries, ",
     heroTitleB: "a clearer path to Web3",
-    heroText: "A focused directory of exchange and wallet entries for Chinese-speaking users. Check the domain, then continue with confidence.",
+    heroText: "A focused directory of exchange and wallet entries for Chinese-speaking users. Clear paths to commonly used entries.",
     explore: "Explore exchanges",
     safetyFirst: "Read safety tips",
     heroTrust: "Navigation only",
@@ -129,7 +129,7 @@ const copy = {
     heroNoTrade: "No trading",
     exchangeKicker: "EXCHANGES",
     exchangeTitle: "Exchange entries",
-    exchangeText: "Dedicated registration entries for three commonly used platforms. Always verify the displayed destination domain before leaving.",
+    exchangeText: "Registration entries for Huobi, OKX, and Binance.",
     special: "Dedicated entry",
     register: "Register",
     rebate: "Register through a dedicated entry on this site to unlock exclusive rebate benefits.",
@@ -139,8 +139,8 @@ const copy = {
     walletText: "Only official wallet addresses are listed. Verify downloads and product guidance on the official site before first use.",
     official: "Official entry",
     openOfficial: "Open official entry",
-    piWarningTitle: "Pi Wallet recovery phrase warning",
-    piWarning: "Only enter your recovery phrase at wallet.pinet.com opened inside the official Pi Browser. Stop immediately if any chat, form, support agent, or other site asks for it.",
+    piWarningTitle: "Wallet recovery phrase safety note",
+    piWarning: "Only enter a recovery phrase or private key in the corresponding wallet's official app or entry. Stop immediately if any chat, form, support agent, or other site asks for it.",
     piSafety: "Pi Safety Center",
     safetyKicker: "SECURITY CHECK",
     safetyTitle: "Three checks before you go",
@@ -271,7 +271,9 @@ export default function Home() {
             {wallets.map((item, index) => (
               <article className="entry-card wallet-card" key={item.name}>
                 <div className="card-index">0{index + 1}</div>
-                <div className={`platform-mark mark-${item.name.toLowerCase().replace(" ", "-")}`} aria-hidden="true">{item.mark}</div>
+                <div className="platform-mark platform-logo">
+                  <img src={item.icon} alt={`${item.name} ${lang === "zh" ? "官方 App 图标" : "official app icon"}`} />
+                </div>
                 <div className="card-title-row"><h3>{item.name}</h3><span className="badge badge-official"><i />{t.official}</span></div>
                 <p className="card-description">{item[lang]}</p>
                 <a className="card-link official-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.openOfficial} ${item.name} — ${item.domain}`}>
