@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 type Lang = "zh" | "en";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (src: string) => `${basePath}${src}`;
-const siteHref = (href: string) => `${basePath}${href}`;
 
 const exchanges = [
   {
@@ -72,7 +70,6 @@ const copy = {
     navExchange: "交易所",
     navWallet: "钱包",
     navSafety: "安全提示",
-    navTutorials: "新手教程",
     navAbout: "商务联系",
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "可信入口，",
@@ -83,10 +80,6 @@ const copy = {
     heroTrust: "仅做入口导航",
     heroNoConnect: "不连接钱包",
     heroNoTrade: "不提供交易",
-    tutorialKicker: "BEGINNER TUTORIALS",
-    tutorialTitle: "从你要完成的任务开始",
-    tutorialText: "14 篇中英文教程，覆盖入金、充提币、软件与硬件钱包，以及 TXID 排查。",
-    tutorialAll: "查看全部教程",
     exchangeKicker: "EXCHANGES",
     exchangeTitle: "交易所入口",
     exchangeText: "火币、欧易、币安的注册入口。",
@@ -126,7 +119,6 @@ const copy = {
     navExchange: "Exchanges",
     navWallet: "Wallets",
     navSafety: "Safety",
-    navTutorials: "Tutorials",
     navAbout: "Contact",
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "Trusted entries, ",
@@ -137,10 +129,6 @@ const copy = {
     heroTrust: "Navigation only",
     heroNoConnect: "No wallet connection",
     heroNoTrade: "No trading",
-    tutorialKicker: "BEGINNER TUTORIALS",
-    tutorialTitle: "Start with the task in front of you",
-    tutorialText: "Fourteen bilingual guides for on-ramps, transfers, software and hardware wallets, and TXID troubleshooting.",
-    tutorialAll: "View all tutorials",
     exchangeKicker: "EXCHANGES",
     exchangeTitle: "Exchange entries",
     exchangeText: "Registration entries for Huobi, OKX, and Binance.",
@@ -234,7 +222,6 @@ export default function Home() {
             <span>{t.brand}</span>
           </button>
           <nav className="desktop-nav" aria-label={lang === "zh" ? "主导航" : "Primary navigation"}>
-            <Link href={siteHref("/tutorials/")}>{t.navTutorials}</Link>
             <button type="button" onClick={() => scrollToSection("exchanges")}>{t.navExchange}</button>
             <button type="button" onClick={() => scrollToSection("wallets")}>{t.navWallet}</button>
             <button type="button" onClick={() => scrollToSection("safety")}>{t.navSafety}</button>
@@ -273,23 +260,6 @@ export default function Home() {
           <span className="orbit-label label-a">EXCHANGE</span>
           <span className="orbit-label label-b">WALLET</span>
           <span className="orbit-label label-c">VERIFY</span>
-        </div>
-      </section>
-
-      <section className="home-tutorial-section shell" aria-labelledby="home-tutorial-title">
-        <div className="section-head">
-          <div><p className="kicker">{t.tutorialKicker}</p><h2 id="home-tutorial-title">{t.tutorialTitle}</h2></div>
-          <div className="home-tutorial-intro"><p>{t.tutorialText}</p><Link href={siteHref("/tutorials/")}>{t.tutorialAll} ↗</Link></div>
-        </div>
-        <div className="home-task-grid">
-          {[
-            ["fiat-in", "¥", "我要入金", "Fiat on-ramp"],
-            ["withdraw-wallet", "↗", "我要提到钱包", "Withdraw to wallet"],
-            ["deposit-exchange", "↘", "我要充到交易所", "Deposit to exchange"],
-            ["fiat-out", "≋", "我要出金", "Fiat off-ramp"],
-            ["hardware-wallet", "◇", "我要设置硬件钱包", "Set up hardware wallet"],
-            ["troubleshoot", "?", "钱没到账", "Funds missing"],
-          ].map(([task, icon, zh, en]) => <Link href={siteHref(`/tutorials/?task=${task}`)} key={task}><b aria-hidden="true">{icon}</b><span>{lang === "zh" ? zh : en}</span><i aria-hidden="true">→</i></Link>)}
         </div>
       </section>
 
