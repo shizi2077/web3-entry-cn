@@ -9,13 +9,13 @@ const siteOrigin = "https://shizi2077.github.io/web3-entry-cn";
 
 export const metadata: Metadata = {
   metadataBase: new URL(`${siteOrigin}/`),
-  title: "币圈聚合导航｜可信入口，清晰抵达 Web3",
-  description: "面向中文用户的交易所与钱包聚合导航，提供清晰入口与关键安全提示。",
+  title: "Web3 币圈聚合导航｜可信入口，清晰抵达 Web3",
+  description: "面向中文用户的交易所、钱包与优质 Web3 资源入口。",
   openGraph: {
-    title: "币圈聚合导航",
+    title: "Web3 币圈聚合导航",
     description: "可信入口，清晰抵达 Web3",
     type: "website",
-    images: [{ url: `${siteOrigin}/og.png`, width: 2200, height: 941, alt: "币圈聚合导航 — 可信入口，清晰抵达 Web3" }],
+    images: [{ url: `${siteOrigin}/og.png`, width: 2200, height: 941, alt: "Web3 币圈聚合导航 — 可信入口，清晰抵达 Web3" }],
   },
   twitter: {
     card: "summary_large_image",

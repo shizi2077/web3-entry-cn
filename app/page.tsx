@@ -64,7 +64,7 @@ const wallets = [
 
 const copy = {
   zh: {
-    brand: "币圈聚合导航",
+    brand: "Web3 币圈聚合导航",
     navExchange: "交易所",
     navWallet: "钱包",
     navSafety: "安全提示",
@@ -72,7 +72,7 @@ const copy = {
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "可信入口，",
     heroTitleB: "清晰抵达 Web3",
-    heroText: "为中文用户整理交易所与钱包入口。信息克制、路径清楚，直达常用入口。",
+    heroText: "为中文用户整理交易所与钱包入口、以及优质 Web3 资源。",
     explore: "浏览交易所",
     safetyFirst: "先看安全提示",
     heroTrust: "仅做入口导航",
@@ -90,9 +90,8 @@ const copy = {
     walletText: "只收录钱包官方地址。首次使用时，建议从官网核对下载来源与产品说明。",
     official: "官方入口",
     openOfficial: "打开官方入口",
-    piWarningTitle: "钱包助记词安全提示",
-    piWarning: "助记词和私钥只能在对应钱包的官方应用或官方入口内输入。任何聊天、表单、客服或其他网站索要，都应立即停止。",
-    piSafety: "查看 Pi 官方安全中心",
+    walletWarningTitle: "钱包助记词安全提示",
+    walletWarning: "助记词和私钥只能在对应钱包的官方应用或官方入口内输入。任何聊天、表单、客服或其他网站索要，都应立即停止。",
     safetyKicker: "SECURITY CHECK",
     safetyTitle: "出发前，做三次核对",
     safetyText: "Web3 入口无法替你撤销错误操作。多花十秒核对，往往比事后补救更重要。",
@@ -102,8 +101,9 @@ const copy = {
     step2d: "不截图、不上传、不通过聊天工具发送助记词或私钥。",
     step3: "小额验证",
     step3d: "首次使用新地址时，先用小额测试确认网络与地址。",
-    aboutKicker: "CONTACT",
-    aboutTitle: "商务合作，请加微信",
+    aboutKicker: "合作与投放",
+    aboutTitle: "让优质 Web3 项目被看见",
+    aboutText: "提供广告投放、站点自荐与 Web3 站点制作服务。欢迎通过微信沟通合作方向与需求。",
     business: "商务联系",
     wechatLabel: "微信 / WeChat",
     wechatHint: "添加时请备注合作事项",
@@ -113,7 +113,7 @@ const copy = {
     langLabel: "Switch to English",
   },
   en: {
-    brand: "Web3 Entry Directory",
+    brand: "Web3 Crypto Directory",
     navExchange: "Exchanges",
     navWallet: "Wallets",
     navSafety: "Safety",
@@ -121,7 +121,7 @@ const copy = {
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "Trusted entries, ",
     heroTitleB: "a clearer path to Web3",
-    heroText: "A focused directory of exchange and wallet entries for Chinese-speaking users. Clear paths to commonly used entries.",
+    heroText: "A focused directory of exchange, wallet, and quality Web3 resources for Chinese-speaking users.",
     explore: "Explore exchanges",
     safetyFirst: "Read safety tips",
     heroTrust: "Navigation only",
@@ -139,9 +139,8 @@ const copy = {
     walletText: "Only official wallet addresses are listed. Verify downloads and product guidance on the official site before first use.",
     official: "Official entry",
     openOfficial: "Open official entry",
-    piWarningTitle: "Wallet recovery phrase safety note",
-    piWarning: "Only enter a recovery phrase or private key in the corresponding wallet's official app or entry. Stop immediately if any chat, form, support agent, or other site asks for it.",
-    piSafety: "Pi Safety Center",
+    walletWarningTitle: "Wallet recovery phrase safety note",
+    walletWarning: "Only enter a recovery phrase or private key in the corresponding wallet's official app or entry. Stop immediately if any chat, form, support agent, or other site asks for it.",
     safetyKicker: "SECURITY CHECK",
     safetyTitle: "Three checks before you go",
     safetyText: "Web3 entry points cannot reverse a mistaken action. Ten seconds of checking can matter more than recovery attempts later.",
@@ -151,8 +150,9 @@ const copy = {
     step2d: "Never screenshot, upload, or send a recovery phrase or private key in chat.",
     step3: "Test with a small amount",
     step3d: "When using a new address, test the network and address with a small amount first.",
-    aboutKicker: "CONTACT",
-    aboutTitle: "Business inquiries on WeChat",
+    aboutKicker: "PARTNERSHIPS & ADVERTISING",
+    aboutTitle: "Help quality Web3 projects get discovered",
+    aboutText: "Advertising placements, site submissions, and Web3 site production. Reach out on WeChat to discuss your needs.",
     business: "Business contact",
     wechatLabel: "WeChat",
     wechatHint: "Please include your partnership topic",
@@ -282,10 +282,9 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <aside className="pi-warning" aria-labelledby="pi-warning-title">
+          <aside className="wallet-warning" aria-labelledby="wallet-warning-title">
             <div className="warning-symbol" aria-hidden="true">!</div>
-            <div><p className="warning-label">IMPORTANT · PI WALLET</p><h3 id="pi-warning-title">{t.piWarningTitle}</h3><p>{t.piWarning}</p></div>
-            <a href="https://minepi.com/safety/" target="_blank" rel="noopener noreferrer">{t.piSafety}<small>minepi.com</small><span aria-hidden="true">↗</span></a>
+            <div><p className="warning-label">IMPORTANT · WALLET</p><h3 id="wallet-warning-title">{t.walletWarningTitle}</h3><p>{t.walletWarning}</p></div>
           </aside>
         </div>
       </section>
@@ -310,7 +309,7 @@ export default function Home() {
 
       <section className="section contact-section" id="about">
         <div className="shell contact-inner">
-          <div className="contact-heading"><p className="kicker">{t.aboutKicker}</p><h2>{t.aboutTitle}</h2></div>
+          <div className="contact-heading"><p className="kicker">{t.aboutKicker}</p><h2>{t.aboutTitle}</h2><p>{t.aboutText}</p></div>
           <div className="wechat-card">
             <img src="/brands/wechat-app.jpg" alt={lang === "zh" ? "微信官方 App 图标" : "Official WeChat app icon"} />
             <div className="wechat-details">
