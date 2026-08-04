@@ -6,24 +6,27 @@ type Lang = "zh" | "en";
 
 const exchanges = [
   {
-    name: "HTX",
-    mark: "H",
+    zhName: "火币",
+    enName: "HTX",
+    icon: "/brands/htx-app.webp",
     href: "https://www.htx.com.hr/invite/zh-cn/1h?invite_code=337d7223",
     domain: "htx.com.hr",
     zh: "面向多地区用户的数字资产平台",
     en: "A digital asset platform serving users across regions",
   },
   {
-    name: "OKX",
-    mark: "OK",
+    zhName: "欧易",
+    enName: "OKX",
+    icon: "/brands/okx-app.jpg",
     href: "https://www.topqwxrvknf.com/join/8160623",
     domain: "topqwxrvknf.com",
     zh: "覆盖交易与 Web3 场景的多端平台",
     en: "A multi-device platform spanning trading and Web3",
   },
   {
-    name: "Binance",
-    mark: "B",
+    zhName: "币安",
+    enName: "Binance",
+    icon: "/brands/binance-app.jpg",
     href: "https://www.bsmkweb.cc/register?ref=ZHUANQIAN168",
     domain: "bsmkweb.cc",
     zh: "提供广泛数字资产服务的全球化平台",
@@ -65,7 +68,7 @@ const copy = {
     navExchange: "交易所",
     navWallet: "钱包",
     navSafety: "安全提示",
-    navAbout: "关于本站",
+    navAbout: "商务联系",
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "可信入口，",
     heroTitleB: "清晰抵达 Web3",
@@ -99,10 +102,11 @@ const copy = {
     step2d: "不截图、不上传、不通过聊天工具发送助记词或私钥。",
     step3: "小额验证",
     step3d: "首次使用新地址时，先用小额测试确认网络与地址。",
-    aboutKicker: "ABOUT",
-    aboutTitle: "清晰的功能边界",
-    aboutText: "本站仅提供公开信息整理与外部入口导航，不提供交易、钱包连接、资产管理、登录、KYC、证件上传或密码输入功能。所有外链会在新窗口打开。",
+    aboutKicker: "CONTACT",
+    aboutTitle: "商务合作，请加微信",
     business: "商务联系",
+    wechatLabel: "微信 / WeChat",
+    wechatHint: "添加时请备注合作事项",
     footer: "可靠、清晰、专业的 Web3 入口导航。",
     toTop: "返回顶部",
     lang: "EN",
@@ -113,7 +117,7 @@ const copy = {
     navExchange: "Exchanges",
     navWallet: "Wallets",
     navSafety: "Safety",
-    navAbout: "About",
+    navAbout: "Contact",
     eyebrow: "WEB3 ENTRY DIRECTORY · 2026",
     heroTitleA: "Trusted entries, ",
     heroTitleB: "a clearer path to Web3",
@@ -147,10 +151,11 @@ const copy = {
     step2d: "Never screenshot, upload, or send a recovery phrase or private key in chat.",
     step3: "Test with a small amount",
     step3d: "When using a new address, test the network and address with a small amount first.",
-    aboutKicker: "ABOUT",
-    aboutTitle: "A clear product boundary",
-    aboutText: "This site organizes public information and links to external destinations only. It does not offer trading, wallet connections, asset management, login, KYC, document upload, or password entry. All external links open in a new window.",
+    aboutKicker: "CONTACT",
+    aboutTitle: "Business inquiries on WeChat",
     business: "Business contact",
+    wechatLabel: "WeChat",
+    wechatHint: "Please include your partnership topic",
     footer: "A reliable, clear, and professional Web3 entry directory.",
     toTop: "Back to top",
     lang: "中",
@@ -235,22 +240,24 @@ export default function Home() {
           <div><p className="kicker">{t.exchangeKicker}</p><h2>{t.exchangeTitle}</h2></div>
           <p>{t.exchangeText}</p>
         </div>
+        <div className="rebate-strip">
+          <span className="rebate-icon" aria-hidden="true">%</span>
+          <div><p>{t.rebateTag}</p><strong>{t.rebate}</strong></div>
+        </div>
         <div className="card-grid">
           {exchanges.map((item, index) => (
-            <article className="entry-card exchange-card" key={item.name}>
+            <article className="entry-card exchange-card" key={item.enName}>
               <div className="card-index">0{index + 1}</div>
-              <div className={`platform-mark mark-${item.name.toLowerCase()}`} aria-hidden="true">{item.mark}</div>
-              <div className="card-title-row"><h3>{item.name}</h3><span className="badge badge-special">{t.special}</span></div>
+              <div className="platform-mark platform-logo">
+                <img src={item.icon} alt={`${lang === "zh" ? item.zhName : item.enName} App ${lang === "zh" ? "图标" : "icon"}`} />
+              </div>
+              <div className="card-title-row"><h3>{lang === "zh" ? item.zhName : item.enName}</h3><span className="badge badge-special">{t.special}</span></div>
               <p className="card-description">{item[lang]}</p>
-              <a className="card-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.register} ${item.name} — ${item.domain}`}>
+              <a className="card-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.register} ${lang === "zh" ? item.zhName : item.enName} — ${item.domain}`}>
                 <span>{t.register}<small>{item.domain}</small></span><b aria-hidden="true">↗</b>
               </a>
             </article>
           ))}
-        </div>
-        <div className="rebate-strip">
-          <span className="rebate-icon" aria-hidden="true">%</span>
-          <div><p>{t.rebateTag}</p><strong>{t.rebate}</strong></div>
         </div>
       </section>
 
@@ -299,11 +306,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section about-section" id="about">
-        <div className="shell about-inner">
-          <div><p className="kicker">{t.aboutKicker}</p><h2>{t.aboutTitle}</h2></div>
-          <p className="about-copy">{t.aboutText}</p>
-          <div className="contact-block"><span>{t.business}</span><strong>thw-202</strong></div>
+      <section className="section contact-section" id="about">
+        <div className="shell contact-inner">
+          <div className="contact-heading"><p className="kicker">{t.aboutKicker}</p><h2>{t.aboutTitle}</h2></div>
+          <div className="wechat-card">
+            <img src="/brands/wechat-app.jpg" alt={lang === "zh" ? "微信官方 App 图标" : "Official WeChat app icon"} />
+            <div className="wechat-details">
+              <span>{t.wechatLabel}</span>
+              <strong>thw-202</strong>
+              <small>{t.wechatHint}</small>
+            </div>
+            <div className="wechat-status"><i />{t.business}</div>
+          </div>
         </div>
       </section>
 
