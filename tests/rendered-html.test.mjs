@@ -23,6 +23,9 @@ test("pre-renders Chinese and English pages", async () => {
 test("keeps navigation functional without client JavaScript", async () => {
   const home = await output("index.html");
   const navigation = home.match(/<nav[^>]*>[\s\S]*?<\/nav>/)?.[0] ?? "";
+  const stylesheet = await output(
+    home.match(/href="([^"]+\.css)"/)?.[1].replace("/web3-entry-cn/", "") ?? "",
+  );
 
   assert.match(navigation, /href="#exchanges"/);
   assert.match(navigation, /href="#wallets"/);
@@ -30,6 +33,7 @@ test("keeps navigation functional without client JavaScript", async () => {
   assert.match(navigation, /href="#about"/);
   assert.doesNotMatch(navigation, /<button/);
   assert.match(home, /href="\/web3-entry-cn\/en\/"/);
+  assert.doesNotMatch(stylesheet, /scroll-behavior:smooth/);
 });
 
 test("lazy-loads below-the-fold images without image preloads", async () => {
