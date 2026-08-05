@@ -34,6 +34,11 @@ test("keeps navigation functional without client JavaScript", async () => {
   assert.doesNotMatch(navigation, /<button/);
   assert.match(home, /href="\/web3-entry-cn\/en\/"/);
   assert.doesNotMatch(stylesheet, /scroll-behavior:smooth/);
+  assert.match(home, /id="hash-navigation"/);
+  assert.match(home, /window\.scrollTo\(0, top\)/);
+  assert.match(home, /window\.history\.replaceState/);
+  assert.match(home, /event\.preventDefault\(\)/);
+  assert.match(home, /event\.stopImmediatePropagation\(\)/);
 });
 
 test("lazy-loads below-the-fold images without image preloads", async () => {

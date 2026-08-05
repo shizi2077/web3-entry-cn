@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element -- These are pre-sized, lazy-loaded local icons in an unoptimized static export. */
 
+import { HashNavigation } from "./HashNavigation";
+
 type Lang = "zh" | "en";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (src: string) => `${basePath}${src}`;
@@ -170,6 +172,7 @@ export function DirectoryPage({ lang }: { lang: Lang }) {
 
   return (
     <main id="top" lang={lang === "zh" ? "zh-CN" : "en"}>
+      <HashNavigation />
       <div className="ambient ambient-one" aria-hidden="true" />
       <div className="ambient ambient-two" aria-hidden="true" />
       <header className="site-header">
