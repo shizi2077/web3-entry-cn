@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shizi2077.github.io/web3-entry-cn/sitemap.xml

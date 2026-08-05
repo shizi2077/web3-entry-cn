@@ -1,10 +1,9 @@
-"use client";
-
-import { useEffect, useState } from "react";
+/* eslint-disable @next/next/no-img-element -- These are pre-sized, lazy-loaded local icons in an unoptimized static export. */
 
 type Lang = "zh" | "en";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const asset = (src: string) => `${basePath}${src}`;
+const route = (path: string) => `${basePath}${path}`;
 
 const exchanges = [
   {
@@ -19,7 +18,7 @@ const exchanges = [
   {
     zhName: "欧易",
     enName: "OKX",
-    icon: "/brands/okx-app.jpg",
+    icon: "/brands/okx-app.webp",
     href: "https://www.topqwxrvknf.com/join/8160623",
     domain: "topqwxrvknf.com",
     zh: "覆盖交易与 Web3 场景的多端平台",
@@ -28,7 +27,7 @@ const exchanges = [
   {
     zhName: "币安",
     enName: "Binance",
-    icon: "/brands/binance-app.jpg",
+    icon: "/brands/binance-app.webp",
     href: "https://www.bsmkweb.cc/register?ref=ZHUANQIAN168",
     domain: "bsmkweb.cc",
     zh: "提供广泛数字资产服务的全球化平台",
@@ -47,7 +46,7 @@ const wallets = [
   },
   {
     name: "Pi Wallet",
-    icon: "/brands/pi-wallet-app.jpg",
+    icon: "/brands/pi-wallet-app.webp",
     href: "https://wallet.pinet.com/",
     domain: "wallet.pinet.com",
     zh: "请通过官方 Pi Browser 打开",
@@ -56,7 +55,7 @@ const wallets = [
   },
   {
     name: "TokenPocket",
-    icon: "/brands/tokenpocket-app.jpg",
+    icon: "/brands/tokenpocket-app.webp",
     href: "https://www.tokenpocket.pro/",
     domain: "tokenpocket.pro",
     zh: "支持多链生态的自托管钱包",
@@ -165,71 +164,29 @@ const copy = {
   },
 };
 
-export default function Home() {
-  const [lang, setLang] = useState<Lang>("zh");
+export function DirectoryPage({ lang }: { lang: Lang }) {
   const t = copy[lang];
-
-  useEffect(() => {
-    const saved = window.localStorage.getItem("site-language");
-    if (saved === "zh" || saved === "en") {
-      window.setTimeout(() => setLang(saved), 0);
-    } else if (!window.navigator.language.toLowerCase().startsWith("zh")) {
-      window.setTimeout(() => setLang("en"), 0);
-    }
-
-    const clearLegacyHash = () => {
-      const initialTarget = window.location.hash.slice(1);
-      if (!initialTarget) return;
-
-      window.requestAnimationFrame(() => {
-        document.getElementById(initialTarget)?.scrollIntoView({ block: "start", behavior: "auto" });
-        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-      });
-    };
-
-    const legacyHashTimer = window.setTimeout(clearLegacyHash, 100);
-    window.addEventListener("hashchange", clearLegacyHash);
-
-    return () => {
-      window.clearTimeout(legacyHashTimer);
-      window.removeEventListener("hashchange", clearLegacyHash);
-    };
-  }, []);
-
-  const toggleLang = () => {
-    const next = lang === "zh" ? "en" : "zh";
-    setLang(next);
-    window.localStorage.setItem("site-language", next);
-    document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
-  };
-
-  const scrollToSection = (targetId: string) => {
-    document.getElementById(targetId)?.scrollIntoView({ block: "start", behavior: "auto" });
-    window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  };
+  const languageHref = lang === "zh" ? route("/en/") : route("/");
 
   return (
-    <main id="top">
+    <main id="top" lang={lang === "zh" ? "zh-CN" : "en"}>
       <div className="ambient ambient-one" aria-hidden="true" />
       <div className="ambient ambient-two" aria-hidden="true" />
       <header className="site-header">
         <div className="shell header-inner">
-          <button className="brand" type="button" onClick={() => scrollToSection("top")} aria-label={t.brand}>
+          <a className="brand" href="#top" aria-label={t.brand}>
             <span className="brand-mark" aria-hidden="true"><i /></span>
             <span>{t.brand}</span>
-          </button>
+          </a>
           <nav className="desktop-nav" aria-label={lang === "zh" ? "主导航" : "Primary navigation"}>
-            <button type="button" onClick={() => scrollToSection("exchanges")}>{t.navExchange}</button>
-            <button type="button" onClick={() => scrollToSection("wallets")}>{t.navWallet}</button>
-            <button type="button" onClick={() => scrollToSection("safety")}>{t.navSafety}</button>
-            <button type="button" onClick={() => scrollToSection("about")}>{t.navAbout}</button>
+            <a href="#exchanges">{t.navExchange}</a>
+            <a href="#wallets">{t.navWallet}</a>
+            <a href="#safety">{t.navSafety}</a>
+            <a href="#about">{t.navAbout}</a>
           </nav>
-          <button className="lang-switch" type="button" onClick={toggleLang} aria-label={t.langLabel}>
+          <a className="lang-switch" href={languageHref} hrefLang={lang === "zh" ? "en" : "zh-CN"} aria-label={t.langLabel}>
             <span aria-hidden="true">◎</span>{t.lang}
-          </button>
+          </a>
         </div>
       </header>
 
@@ -243,8 +200,8 @@ export default function Home() {
           <h1 id="hero-title">{t.heroTitleA}<em>{t.heroTitleB}</em></h1>
           <p className="hero-intro">{t.heroText}</p>
           <div className="hero-actions">
-            <button className="button button-primary" type="button" onClick={() => scrollToSection("exchanges")}>{t.explore}<span aria-hidden="true">↘</span></button>
-            <button className="button button-ghost" type="button" onClick={() => scrollToSection("safety")}>{t.safetyFirst}</button>
+            <a className="button button-primary" href="#exchanges">{t.explore}<span aria-hidden="true">↘</span></a>
+            <a className="button button-ghost" href="#safety">{t.safetyFirst}</a>
           </div>
           <div className="trust-line" aria-label={lang === "zh" ? "本站功能边界" : "Site boundaries"}>
             <span>✓ {t.heroTrust}</span><span>✓ {t.heroNoConnect}</span><span>✓ {t.heroNoTrade}</span>
@@ -277,12 +234,19 @@ export default function Home() {
             <article className="entry-card exchange-card" key={item.enName}>
               <div className="card-index">0{index + 1}</div>
               <div className="platform-mark platform-logo">
-                <img src={asset(item.icon)} alt={`${lang === "zh" ? item.zhName : item.enName} App ${lang === "zh" ? "图标" : "icon"}`} />
+                <img
+                  src={asset(item.icon)}
+                  alt={`${lang === "zh" ? item.zhName : item.enName} App ${lang === "zh" ? "图标" : "icon"}`}
+                  width={58}
+                  height={58}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div className="card-title-row"><h3>{lang === "zh" ? item.zhName : item.enName}</h3><span className="badge badge-special">{t.special}</span></div>
               <p className="card-description">{item[lang]}</p>
-              <a className="card-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.register} ${lang === "zh" ? item.zhName : item.enName} — ${item.domain}`}>
-                <span>{t.register}<small>{item.domain}</small></span><b aria-hidden="true">↗</b>
+              <a className="card-link" href={item.href} target="_blank" rel="noopener noreferrer">
+                <span>{t.register} {lang === "zh" ? item.zhName : item.enName}<small>{item.domain}</small></span><b aria-hidden="true">↗</b>
               </a>
             </article>
           ))}
@@ -300,12 +264,19 @@ export default function Home() {
               <article className="entry-card wallet-card" key={item.name}>
                 <div className="card-index">0{index + 1}</div>
                 <div className="platform-mark platform-logo">
-                  <img src={asset(item.icon)} alt={`${item.name} ${lang === "zh" ? "官方 App 图标" : "official app icon"}`} />
+                  <img
+                    src={asset(item.icon)}
+                    alt={`${item.name} ${lang === "zh" ? "官方 App 图标" : "official app icon"}`}
+                    width={58}
+                    height={58}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <div className="card-title-row"><h3>{item.name}</h3><span className="badge badge-official"><i />{t.official}</span></div>
                 <p className="card-description">{item[lang]}</p>
-                <a className="card-link official-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`${t.openOfficial} ${item.name} — ${item.domain}`}>
-                  <span>{t.openOfficial}<small>{item.domain}</small></span><b aria-hidden="true">↗</b>
+                <a className="card-link official-link" href={item.href} target="_blank" rel="noopener noreferrer">
+                  <span>{t.openOfficial} {item.name}<small>{item.domain}</small></span><b aria-hidden="true">↗</b>
                 </a>
               </article>
             ))}
@@ -339,7 +310,14 @@ export default function Home() {
         <div className="shell contact-inner">
           <div className="contact-heading"><p className="kicker">{t.aboutKicker}</p><h2>{t.aboutTitle}</h2><p>{t.aboutText}</p></div>
           <div className="wechat-card">
-            <img src={asset("/brands/wechat-app.jpg")} alt={lang === "zh" ? "微信官方 App 图标" : "Official WeChat app icon"} />
+            <img
+              src={asset("/brands/wechat-app.webp")}
+              alt={lang === "zh" ? "微信官方 App 图标" : "Official WeChat app icon"}
+              width={76}
+              height={76}
+              loading="lazy"
+              decoding="async"
+            />
             <div className="wechat-details">
               <span>{t.wechatLabel}</span>
               <strong>thw-202</strong>
@@ -352,11 +330,15 @@ export default function Home() {
 
       <footer>
         <div className="shell footer-inner">
-          <button className="brand" type="button" onClick={() => scrollToSection("top")}><span className="brand-mark small" aria-hidden="true"><i /></span><span>{t.brand}</span></button>
+          <a className="brand" href="#top"><span className="brand-mark small" aria-hidden="true"><i /></span><span>{t.brand}</span></a>
           <p>{t.footer}</p>
-          <button type="button" onClick={() => scrollToSection("top")} className="to-top">{t.toTop} ↑</button>
+          <a href="#top" className="to-top">{t.toTop} ↑</a>
         </div>
       </footer>
     </main>
   );
+}
+
+export default function Home() {
+  return <DirectoryPage lang="zh" />;
 }

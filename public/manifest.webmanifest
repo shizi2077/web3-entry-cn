@@ -1,0 +1,19 @@
+{
+  "name": "Web3 币圈聚合导航",
+  "short_name": "Web3 导航",
+  "description": "面向中文用户的 Web3 入口导航。",
+  "lang": "zh-CN",
+  "start_url": "/web3-entry-cn/",
+  "scope": "/web3-entry-cn/",
+  "display": "standalone",
+  "background_color": "#061013",
+  "theme_color": "#061013",
+  "icons": [
+    {
+      "src": "/web3-entry-cn/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
